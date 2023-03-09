@@ -1,3 +1,7 @@
+<%@ page import="com.example.servidores.dao.DbConnection" %>
+<%@ page import="com.example.servidores.model.Solicitud" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.servidores.dao.SolicitudDao" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,27 +57,33 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach items="${solicitudes}" var="solicitud" varStatus="status">
+              <% DbConnection dbConnection = new DbConnection();
+                List<Solicitud> solicitudes = new SolicitudDao(dbConnection).getAll();
+                for (Solicitud solicitud : solicitudes) {
+              %>
+<%--              <c:forEach items="${solicitudes}" var="solicitud" varStatus="status">--%>
                 <tr>
-                  <td class="left">${solicitud.fecha}</td>
-                  <td>${solicitud.nombre}</td>
-                  <td>${solicitud.email}</td>
-                  <td>${solicitud.telefono}</td>
-                  <td>${solicitud.direccion}</td>
-                  <td>${solicitud.servidor.nombre}</td>
+                  <td class="left"><%= solicitud.getFecha() %></td>
+                  <td><%= solicitud.getNombre() %></td>
+                  <td><%= solicitud.getEmail() %></td>
+                  <td><%= solicitud.getTelefono() %></td>
+                  <td><%= solicitud.getDireccion() %></td>
+                  <td><%= solicitud.getServidor().getNombre() %></td>
                   <td>
                     <left>   
                       <!-- Mostramos un link para el archivo subido por el usuario. El nombre del archivo lo tenemos
                       guadado en el campo archivo de la tabla solicitud y estan almacenados en la carpeta uploads en nuestro
                       directorio raiz de nuestra aplicacion.
                       -->
-                      <a href="uploads/${solicitud.archivo}" target="_blank">
+                      <a href="uploads/<%= solicitud.getArchivo() %>" target="_blank">
                         <img src="images/download.png" title="Descargar adjunto">
                       </a>
                     </left>
                   </td>                                      
                 </tr>
-              </c:forEach>                      
+<%--              </c:forEach>                      --%>
+                <% }
+                  dbConnection.disconnect();%>
             </tbody>           
           </table>
         </div>

@@ -40,7 +40,7 @@
         </div>
         <div class="panel-body">
 
-          <form action="solicitud" method="post" enctype="multipart/form-data">
+          <form action="solicitud" method="post"  enctype="multipart/form-data">
              <div class="form-group">
               <label for="nombre">Nombre</label>
               <input type="text" class="form-control" name="nombre" value="${solicitud.nombre}" required id="nombre">
@@ -62,6 +62,7 @@
               <input type="file" required id="archivo" name="archivo">
               <p class="help-block">Solo se permiten archivos con extensiones [ .pdf, .odt ]</p>
             </div>             
+<%--            <input type="hidden" value="${servidor.id}" name="idServidor">--%>
             <input type="hidden" value="${servidor.id}" name="idServidor">
             <button type="submit" class="btn btn-success" >Solicitar</button>
           </form>

@@ -23,7 +23,7 @@
         <servlet-name>SolicitudController</servlet-name>
         <servlet-class>com.example.servidores.controller.SolicitudController</servlet-class>
         <multipart-config>
-            <location>/tmp</location>
+            <location></location>
             <!-- Tamano maximo del archivo a subir-->
             <max-file-size>3145728</max-file-size>
             <max-request-size>418018841</max-request-size>

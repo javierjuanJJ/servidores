@@ -37,12 +37,14 @@ public class SolicitudController extends HttpServlet {
             throws ServletException, IOException {       
         // Recibimos los campos de tipo texto
         String nombreParam = request.getParameter("nombre");
+
         String emailParam = request.getParameter("email");
         String telefonoParam = request.getParameter("telefono");
         String direccionParam = request.getParameter("direccion");
         // Este parametro idServidor es el que viene en la URL del boton "Enviar"
         // servidor?action=enviar&id=${servidor.id}
         // Para insertarlo en la tabla Solicitud reservamos el idServidor (Foreign key)
+        System.out.println(request.getParameter("idServidor"));
         int idServidorParam = Integer.parseInt(request.getParameter("idServidor"));
 
         // Creamos el objeto que guardaremos
@@ -63,6 +65,7 @@ public class SolicitudController extends HttpServlet {
         String applicationPath = request.getServletContext().getRealPath("");
         // constructs path of the directory to save uploaded file
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+        //String uploadFilePath = UPLOAD_DIR;
         /*
         La clase Part, representa un archivo fisico que subio el usuario. Este nombre "archivo" debe ser el especificado
         en el formulario HTML para input de tipo file
@@ -98,7 +101,8 @@ public class SolicitudController extends HttpServlet {
             
             // Escribimos el archivo al disco duro del servidor
             // Aqui se guarda el archivo al directorio webapps/servidores/uploads con el nombre formado anteriormente
-            archivo.write(uploadFilePath + File.separator + archivoFisico); 
+            // archivo.write(uploadFilePath + File.separator + archivoFisico);
+            archivo.write(uploadFilePath + archivoFisico);
             rd = request.getRequestDispatcher("/mensaje_guest.jsp");
             rd.forward(request, response);
         } else { // No es un archivo valido...
