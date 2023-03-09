@@ -1,3 +1,9 @@
+<%@ page import="com.example.servidores.model.Servidor" %>
+<%@ page import="com.example.servidores.dao.ServidorDao" %>
+<%@ page import="com.example.servidores.dao.DbConnection" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.servidores.model.Usuario" %>
+<%@ page import="com.example.servidores.dao.UsuarioDao" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,20 +60,30 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach items="${servidores}" var="servidor" varStatus="status">
-                <tr>
-                  <td class="left">${servidor.id}</td>
-                  <td>${servidor.nombre}</td>
-                  <td>${servidor.fechaPublicacion}</td>
-                  <td><a class="btn btn-default" href="servidor?action=ver&id=${servidor.id}" role="button">Ver Detalles</a>                
-                  
-                  <c:if test="${usuario.id > 0}">
-                    <a class="btn btn-default" href="admin?action=eliminar&idServidor=${servidor.id}" role="button">Eliminar</a> 
-                  </c:if>
-                        
+<%--              <c:forEach items="${servidores}" var="servidor" varStatus="status">--%>
+            <%
+              DbConnection dbConnection1 = new DbConnection();
+              DbConnection dbConnection = dbConnection1;
+              List<Servidor> servidores = new ServidorDao(dbConnection).getAll();
+              for (Servidor servidor : servidores) {%>
+
+
+              <tr>
+                  <td class="left"><%= servidor.getId() %></td>
+                  <td><%= servidor.getNombre() %></td>
+                  <td><%= servidor.getFechaPublicacion() %></td>
+                  <td><a class="btn btn-default" href="servidor?action=ver&id=<%= servidor.getId() %>" role="button">Ver Detalles</a>
+                    <%
+                      if (new UsuarioDao(dbConnection1).login("admin","admin").getId() > 0 ){%>
+<%--                  <c:if test="${usuario.id > 0}">--%>
+                    <a class="btn btn-default" href="admin?action=eliminar&idServidor=<%= servidor.getId() %>" role="button">Eliminar</a>
+                    <% }
+                      dbConnection1.disconnect();
+                    %>
                   </td>  
                 </tr>
-              </c:forEach>                      
+            <% }
+            dbConnection.disconnect();%>
             </tbody>           
           </table>
         </div>
